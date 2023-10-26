@@ -241,7 +241,6 @@ BOOL	CALLBACK _export SMMsgProc(HWND hWndDlg, UINT msg, WPARAM wParam, LPARAM lP
 #define IDS_TOOBIG	50	// "File is too big to be a valid .PIF"
 #define IDS_OLDPIF	51	// "This is an old Windows PIF", "OpenPIF"
 #define IDS_BADCHECKSUM 53	// ".PIF internal structure ... be damaged"
-#define IDS_NOTVALIDQPE 54	// "The Qualitas PIF Extension file, %s, associated with %s is invalid"
 
 #define IDS_BADNUM	70	// "'%s' value must be between %d and %d"
 #define IDS_BADNUM2	71	// "'%s' value must be -1, or between %d and %d"
@@ -280,4 +279,5 @@ BYTE	ComputePIFChecksum(PPIF pPIF);	// Checksum the PIFHDR
 
 int MessageBoxString(HWND hWnd, HINSTANCE hInst, UINT uID, UINT uType);
 void FAR cdecl MessageBoxPrintf(LPSTR szFormat, ...);
-VOID StandardMode(HWND hWnd);
+BOOL CALLBACK _export StandardMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+VOID FixNul(register PSTR psz, int n);

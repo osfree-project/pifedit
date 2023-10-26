@@ -464,30 +464,6 @@ VOID CommDlgError(HWND hWnd, DWORD dwErrorCode)
 }
 
 
-/****************************************************************************
- *
- *  FUNCTION :	FixNul(PSTR, int)
- *
- *  PURPOSE  :	NUL-terminate string before last whitespace
- *		Used to remove trailing whitespace in buffers
- *
- *  ENTRY    :	PSTR	psz;		// ==> string
- *		int	n;		// lstrlen(string)
- *
- *  RETURNS  :	VOID
- *
- ****************************************************************************/
-
-// Walk backward from the end of the string to the first non-whitespace or NUL
-
-VOID FixNul(register PSTR psz, int n)
-{
-    PSTR p = psz + n - 1;
-
-    while (p >= psz && (*p == '\0' || *p == ' ')) p--;
-
-    *(p+1) = '\0';
-}
 
 
 /****************************************************************************
@@ -1098,8 +1074,14 @@ VOID Pane_OnCommand(HWND hWnd, UINT id, HWND hWndCtl, WORD codeNotify)
 
 	//case IDB_ENHANCED:
 	case IDB_STANDARD:
-		StandardMode(0);
-	    break;
+	{
+		FARPROC	lpfnSMMsgProc;
+
+		lpfnSMMsgProc = MakeProcInstance((FARPROC) StandardMsgProc, Globals.hInst);
+		DialogBox(Globals.hInst, MAKEINTRESOURCE(IDD_STANDARD), 0, (DLGPROC) lpfnSMMsgProc);
+		FreeProcInstance(lpfnSMMsgProc);
+		break;
+	}
 
 //	default:
 // RCC - added kludge 10/15

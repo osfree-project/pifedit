@@ -57,3 +57,28 @@ void MakePathName(register char *dname, char *pszFileName)
 
 	lstrcat( dname, pszFileName );
 }
+
+/****************************************************************************
+ *
+ *  FUNCTION :	FixNul(PSTR, int)
+ *
+ *  PURPOSE  :	NUL-terminate string before last whitespace
+ *		Used to remove trailing whitespace in buffers
+ *
+ *  ENTRY    :	PSTR	psz;		// ==> string
+ *		int	n;		// lstrlen(string)
+ *
+ *  RETURNS  :	VOID
+ *
+ ****************************************************************************/
+
+// Walk backward from the end of the string to the first non-whitespace or NUL
+
+VOID FixNul(register PSTR psz, int n)
+{
+    PSTR p = psz + n - 1;
+
+    while (p >= psz && (*p == '\0' || *p == ' ')) p--;
+
+    *(p+1) = '\0';
+}

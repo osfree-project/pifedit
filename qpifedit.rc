@@ -1,10 +1,5 @@
 /* qpifedit.rc - (C) Copyright 1993 Qualitas, Inc.  GNU General Public License version 3. */
 
-// Due to the fiddly nature of the dialog panes, always edit these dialog
-// resources by hand.  Don't use a dialog editor or resource workshop unless
-// you really understand what you're doing and you don't expect me to fix it.
-// WRL 18 MAR 93
-
 #include <windows.h>
 
 #include "main.h"
@@ -15,35 +10,35 @@
 #include <mversion.h>
 #include <common.ver>
 
-IDI_QIF 	ICON	qpifedit.ico
+IDI_QIF	ICON	pifedit.ico
 
 MenuApp MENU PRELOAD MOVEABLE DISCARDABLE
 BEGIN
-    POPUP "&File"
-    BEGIN
+	POPUP "&File"
+	BEGIN
 	MENUITEM "&New",        IDM_F_NEW
 	MENUITEM "&Open...",    IDM_F_OPEN
 	MENUITEM "&Save",       IDM_F_SAVE
 	MENUITEM "Save &As...", IDM_F_SAVEAS
 	MENUITEM SEPARATOR
 	MENUITEM "E&xit",       IDM_F_EXIT
-    END
+	END
 
-    POPUP "&Mode"
-    BEGIN
+	POPUP "&Mode"
+	BEGIN
 	MENUITEM "&Standard",    IDB_STANDARD
 	MENUITEM "&386 Enhanced",  IDB_ENHANCED
-    END
+	END
 
-    POPUP "&Help"
-    BEGIN
+	POPUP "&Help"
+	BEGIN
 	MENUITEM "&Overview", IDM_H_OVERVIEW
 	MENUITEM "&Search for Help on...", IDM_H_SEARCH
 	MENUITEM SEPARATOR
 	MENUITEM "&Technical Support", IDM_H_TECHSUP
 	MENUITEM SEPARATOR
 	MENUITEM "&About PIF Editor...", IDM_H_ABOUT
-    END
+	END
 END
 
 ;Standard Mode Dialog
@@ -103,59 +98,59 @@ STYLE DS_LOCALEDIT | WS_OVERLAPPED | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_M
 MENU MenuApp
 FONT 8, "MS Sans Serif"
 BEGIN
-    LTEXT	    "&Program Filename:", IDT_FILENAME, 6, 4, 61, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_FILENAME, 88, 2, 156, 12, ES_AUTOHSCROLL
+	LTEXT	    "&Program Filename:", IDT_FILENAME, 6, 4, 61, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_FILENAME, 88, 2, 156, 12, ES_AUTOHSCROLL
 
-    LTEXT	    "Window &Title:", IDT_TITLE, 6, 19, 46, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_TITLE, 88, 17, 135, 12, ES_AUTOHSCROLL
+	LTEXT	    "Window &Title:", IDT_TITLE, 6, 19, 46, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_TITLE, 88, 17, 135, 12, ES_AUTOHSCROLL
 
-    LTEXT	    "&Optional Parameters:", IDT_PARAMS, 6, 34, 69, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_PARAMS, 88, 32, 156, 12, ES_AUTOHSCROLL
+	LTEXT	    "&Optional Parameters:", IDT_PARAMS, 6, 34, 69, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_PARAMS, 88, 32, 156, 12, ES_AUTOHSCROLL
 
-    LTEXT	    "&Start-up Directory:", IDT_DIRECTORY, 6, 49, 61, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_DIRECTORY, 88, 47, 156, 12, ES_AUTOHSCROLL
+	LTEXT	    "&Start-up Directory:", IDT_DIRECTORY, 6, 49, 61, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_DIRECTORY, 88, 47, 156, 12, ES_AUTOHSCROLL
 
-    LTEXT	    "&Video Memory:", IDT_VIDMEM, 6, 66, 89, 8, NOT WS_GROUP
+	LTEXT	    "&Video Memory:", IDT_VIDMEM, 6, 66, 89, 8, NOT WS_GROUP
 
-    CONTROL	    "Text", IDB_TEXT, "Button", BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP, 71, 64, 27, 10
-    CONTROL	    "Low Graphics", IDB_LOW, "Button", BS_AUTORADIOBUTTON | WS_TABSTOP, 114, 64, 57, 10
-    CONTROL	    "High Graphics", IDB_HIGH, "Button", BS_AUTORADIOBUTTON | WS_TABSTOP, 179, 64, 59, 10
+	CONTROL	    "Text", IDB_TEXT, "Button", BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP, 71, 64, 27, 10
+	CONTROL	    "Low Graphics", IDB_LOW, "Button", BS_AUTORADIOBUTTON | WS_TABSTOP, 114, 64, 57, 10
+	CONTROL	    "High Graphics", IDB_HIGH, "Button", BS_AUTORADIOBUTTON | WS_TABSTOP, 179, 64, 59, 10
 
-    LTEXT	    "Memory Requirements:", IDT_DOSMEM, 6, 80, 119, 8, NOT WS_GROUP
+	LTEXT	    "Memory Requirements:", IDT_DOSMEM, 6, 80, 119, 8, NOT WS_GROUP
 
-    LTEXT	    "KB &Required", IDT_DOSMIN, 95, 80, 46, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_DOSMIN, 150, 78, 19, 12, ES_AUTOHSCROLL | WS_GROUP
+	LTEXT	    "KB &Required", IDT_DOSMIN, 95, 80, 46, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_DOSMIN, 150, 78, 19, 12, ES_AUTOHSCROLL | WS_GROUP
 
-    LTEXT	    "KB &Desired", IDT_DOSMAX, 180, 80, 46, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_DOSMAX, 220, 78, 19, 12, ES_AUTOHSCROLL | WS_GROUP
+	LTEXT	    "KB &Desired", IDT_DOSMAX, 180, 80, 46, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_DOSMAX, 220, 78, 19, 12, ES_AUTOHSCROLL | WS_GROUP
 
-    LTEXT	    "EMS Memory:", IDT_EMSMEM, 6, 95, 49, 8, NOT WS_GROUP
+	LTEXT	    "EMS Memory:", IDT_EMSMEM, 6, 95, 49, 8, NOT WS_GROUP
 
-    LTEXT	    "KB &Required", IDT_EMSMIN, 61, 95, 43, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_EMSMIN, 108, 93, 26, 12, ES_AUTOHSCROLL | WS_GROUP
+	LTEXT	    "KB &Required", IDT_EMSMIN, 61, 95, 43, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_EMSMIN, 108, 93, 26, 12, ES_AUTOHSCROLL | WS_GROUP
 
-    LTEXT	    "KB &Limit", IDT_EMSMAX, 143, 95, 46, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_EMSMAX, 180, 93, 29, 12, ES_AUTOHSCROLL | WS_GROUP
+	LTEXT	    "KB &Limit", IDT_EMSMAX, 143, 95, 46, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_EMSMAX, 180, 93, 29, 12, ES_AUTOHSCROLL | WS_GROUP
 
-    LTEXT	    "XMS Memory:", IDT_XMSMEM, 6, 112, 49, 8, NOT WS_GROUP
+	LTEXT	    "XMS Memory:", IDT_XMSMEM, 6, 112, 49, 8, NOT WS_GROUP
 
-    LTEXT	    "KB Re&quired", IDT_XMSMIN, 61, 112, 43, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_XMSMIN, 108, 108, 26, 12, ES_AUTOHSCROLL | WS_GROUP | WS_TABSTOP
+	LTEXT	    "KB Re&quired", IDT_XMSMIN, 61, 112, 43, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_XMSMIN, 108, 108, 26, 12, ES_AUTOHSCROLL | WS_GROUP | WS_TABSTOP
 
-    LTEXT	    "KB L&imit", IDT_XMSMAX, 143, 112, 46, 8, NOT WS_GROUP
-    EDITTEXT	    IDE_XMSMAX, 180, 108, 29, 12, ES_AUTOHSCROLL | WS_GROUP | WS_TABSTOP
+	LTEXT	    "KB L&imit", IDT_XMSMAX, 143, 112, 46, 8, NOT WS_GROUP
+	EDITTEXT	    IDE_XMSMAX, 180, 108, 29, 12, ES_AUTOHSCROLL | WS_GROUP | WS_TABSTOP
 
-    LTEXT    "Display Usage:", IDG_DISPLAY, 6, 121, 63, 37, NOT WS_TABSTOP
+	LTEXT    "Display Usage:", IDG_DISPLAY, 6, 121, 63, 37, NOT WS_TABSTOP
 
-    CONTROL	    "F&ull Screen", IDB_FULLSCREEN, "Button", BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP, 68, 121, 50, 10
-    CONTROL	    "&Windowed", IDB_WINDOWED, "Button", BS_AUTORADIOBUTTON | WS_TABSTOP, 68, 134, 47, 10
+	CONTROL	    "F&ull Screen", IDB_FULLSCREEN, "Button", BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP, 68, 121, 50, 10
+	CONTROL	    "&Windowed", IDB_WINDOWED, "Button", BS_AUTORADIOBUTTON | WS_TABSTOP, 68, 134, 47, 10
 
-    LTEXT	"Execution", IDG_EXEC, 135, 121, 83, 37, NOT WS_TABSTOP
+	LTEXT	"Execution", IDG_EXEC, 135, 121, 83, 37, NOT WS_TABSTOP
 
-    CONTROL	    "&Background", IDB_BACKEXEC, "Button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 173, 121, 52, 10
-    CONTROL	    "&Exclusive", IDB_EXCLEXEC, "Button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 173, 134, 44, 10
+	CONTROL	    "&Background", IDB_BACKEXEC, "Button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 173, 121, 52, 10
+	CONTROL	    "&Exclusive", IDB_EXCLEXEC, "Button", BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 173, 134, 44, 10
 
-    CONTROL	    "&Close Window on exit", IDB_CLOSEEXIT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 145, 83, 10
+	CONTROL	    "&Close Window on exit", IDB_CLOSEEXIT, "Button", BS_AUTOCHECKBOX | WS_TABSTOP, 6, 145, 83, 10
 
 	PUSHBUTTON "&Advanced...",  IDB_ADVANCED, 120, 140, 45, 15
 
@@ -279,44 +274,43 @@ END
 
 STRINGTABLE PRELOAD MOVEABLE DISCARDABLE
 BEGIN
-    IDS_APPNAME, APPNAME
-    IDS_APPTITLE, APPTITLE
+	IDS_APPNAME, APPNAME
+	IDS_APPTITLE, APPTITLE
 
-    1, "No help available for this control\0"
+	1, "No help available for this control\0"
 
-    IDE_DOSMIN, "KB Minimum"
-    IDE_DOSMAX, "KB Desired"
-    IDE_EMSMIN, "EMS Minimum"
-    IDE_EMSMAX, "EMS Limit"
-    IDE_XMSMIN, "XMS Minimum"
-    IDE_XMSMAX, "XMS Limit"
+	IDE_DOSMIN, "KB Minimum"
+	IDE_DOSMAX, "KB Desired"
+	IDE_EMSMIN, "EMS Minimum"
+	IDE_EMSMAX, "EMS Limit"
+	IDE_XMSMIN, "XMS Minimum"
+	IDE_XMSMAX, "XMS Limit"
 
-    IDE_BACKPRIO,	"Background Priority"
-    IDE_FOREPRIO,	"Foreground Priority"
+	IDE_BACKPRIO,	"Background Priority"
+	IDE_FOREPRIO,	"Foreground Priority"
 
-    IDS_FILEMASK,	"PIF Files(*.PIF)\n*.pif\n"
+	IDS_FILEMASK,	"PIF Files(*.PIF)\n*.pif\n"
 
-    IDS_REGISTER_CLASS, "Register class failed"
-    IDS_REALMODE,	"PIFEDIT requires Windows 3.x running in Standard or 386 Enhanced mode"
-    IDS_MODE286,	"PIFEDIT doesn't support the editting of Standard mode .PIFs"
-    IDS_SAVECHANGES,	"Save changes to %s?"
-    IDS_UNTITLED,	"(Untitled)"
+	IDS_REGISTER_CLASS, "Register class failed"
+	IDS_REALMODE,	"PIFEDIT requires Windows 3.x running in Standard or 386 Enhanced mode"
+	IDS_MODE286,	"PIFEDIT doesn't support the editting of Standard mode .PIFs"
+	IDS_SAVECHANGES,	"Save changes to %s?"
+	IDS_UNTITLED,	"(Untitled)"
 
-    IDS_CANTOPEN,	"Can't open %s"
-    IDS_NOTVALIDPIF,	"%s is not a valid .PIF file"
-    IDS_TOOBIG, 	"File is too big to be a valid .PIF"
-    IDS_OLDPIF, 	"This is an old Windows PIF"
-    IDS_BADCHECKSUM,	".PIF internal structure appears to be damaged"
-    IDS_NOTVALIDQPE,	"The Qualitas PIF Extension file, %s, associated with %s is invalid"
+	IDS_CANTOPEN,	"Can't open %s"
+	IDS_NOTVALIDPIF,	"%s is not a valid .PIF file"
+	IDS_TOOBIG, 	"File is too big to be a valid .PIF"
+	IDS_OLDPIF, 	"This is an old Windows PIF"
+	IDS_BADCHECKSUM,	".PIF internal structure appears to be damaged"
 
-    IDS_BADNUM, "'%s' value must be between %d and %d"
-    IDS_BADNUM2,	"'%s' value must be -1, or between %d and %d"
+	IDS_BADNUM, "'%s' value must be between %d and %d"
+	IDS_BADNUM2,	"'%s' value must be -1, or between %d and %d"
 
-    IDS_FILENAMEREQ,	"The required program filename is required."
-    IDS_BADFILENAME,	"Invalid filename. \n\r\rCheck to ensure the filename has no more than 8 characters followed by a period and a 3-letter extension.  Press OK to ignore this warning."
+	IDS_FILENAMEREQ,	"The required program filename is required."
+	IDS_BADFILENAME,	"Invalid filename. \n\r\rCheck to ensure the filename has no more than 8 characters followed by a period and a 3-letter extension.  Press OK to ignore this warning."
 
-    IDS_COMMDLGERR,	"Problem using COMMDLG.DLL for OPEN or SAVE"
-    IDS_OUTOFMEMORY,	"Out of memory"
-    IDS_NOWIN95,	"PIFEDIT is not compatible with Windows 95.  To edit PIF values in Win95, right click on the icon and edit the Property sheets."
+	IDS_COMMDLGERR,	"Problem using COMMDLG.DLL for OPEN or SAVE"
+	IDS_OUTOFMEMORY,	"Out of memory"
+	IDS_NOWIN95,	"PIFEDIT is not compatible with Windows 95.  To edit PIF values in Win95, right click on the icon and edit the Property sheets."
 END
 
