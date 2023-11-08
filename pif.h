@@ -1,12 +1,11 @@
-/*' $Header:   P:/PVCS/MAX/INCLUDE/PIF.H_V   1.1   02 Jun 1997 14:37:32   BOB  $ */
 /******************************************************************************
- *									      *
- * (C) Copyright 1992-93 Qualitas, Inc.  GNU General Public License version 3.		      *
- *									      *
- * PIF.H								      *
- *									      *
- * Windows .PIF structure and equates					      *
- *									      *
+ *
+ * (C) Copyright 1992-93 Qualitas, Inc.  GNU General Public License version 3.
+ *
+ * PIF.H
+ *
+ * Windows .PIF structure and equates
+ *
  ******************************************************************************/
 
 /*
@@ -23,13 +22,13 @@ https://drdobbs.com/architecture-and-design/undocumented-corner/184409042
 #include <windows.h>
 #endif	/* #ifndef _INC_WINDOWS */
 
-typedef struct tagPIFHDR {	// Windows 2.x section taken from TopView
+typedef struct tagPIFHDR {	// Windows 1.x/2.x section taken from TopView
     BYTE	Reserved0;	// 000: Reserved
     BYTE	CheckSum;	// 001: Checksum of bytes 002 thru 170
     char	Title[30];	// 002: Program title padded with blanks
     WORD	DosMaxS;	// 020: Low DOS max /S
     WORD	DosMinS;	// 022: Low DOS min /S
-    char	PgmName[63];	// 024: Program name ASCIZ // TopView uses 64 bytes
+    char	PgmName[63];	// 024: Program name ASCIIZ // TopView uses 64 bytes
     BYTE	Flags1; 	// 063: Microsoft behavior bits // Used by TopView as part of PgmName
 				//	0x01 Modifies memory (fResident)
 				//	0x02 Video mode graphics /S (fGraphics)
@@ -39,8 +38,8 @@ typedef struct tagPIFHDR {	// Windows 2.x section taken from TopView
 				//	0x40 Modify COM2 /S (fCOM2)
 				//	0x80 Modify COM1 /S (fCOM1)
     BYTE	Reserved1;	// 064: Reserved
-    char	StartupDir[64]; // 065: Startup directory ASCIZ
-    char	CmdLineS[64];	// 0A5: Optional parameters ASCIZ /S
+    char	StartupDir[64]; // 065: Startup directory ASCIIZ
+    char	CmdLineS[64];	// 0A5: Optional parameters ASCIIZ /S
     BYTE	ScreenType;	// 0E5: Windows doesn't use this
 				//	0x00 Reserved
 				//	0x01 Reserved
@@ -73,6 +72,18 @@ typedef struct tagPIFHDR {	// Windows 2.x section taken from TopView
 				//	0x40 Uses parameters
 				// 171:
 } PIFHDR, * PPIFHDR, FAR * LPPIFHDR;
+
+#define	fResident 0x01
+#define fGraphics 0x02
+#define fNoSwitch 0x04
+#define fNoGrab   0x08
+#define fDestroy  0x10
+#define fCOM2 0x40
+#define fCOM1 0x80
+#define fFullScreen 0x80
+#define fForeground 0x40
+#define fCoProcessor 0x20
+#define fKeyboard 0x10
 
 // NOTE!! Maximum whole file size is 03ffh for Windows 3.x and Windows NT 3.x series!!
 
@@ -298,8 +309,105 @@ typedef struct tagPIF {
 //	PIFSIG	pifSigCONFIG;	// Windows 95 CONFIG.SYS
 //	PIFSIG	pifSigAUTOEXEC;	// Windows 95 AUTOEXEC.BAT
 //	PIFSIG	pifSigNT31;	// "WINDOWS NT  3.1" signature
-//	PIFNT31	pifNT31;	// Windows NT 3.1 mode data
+//	PIFNT31	pifNT31;	// Windows NT  3.1 mode data
 //	PIFSIG	pifSigNT40;	// "WINDOWS NT  4.0" signature
 //	PIFNT40	pifNT40;	// Windows NT 4.0 mode data
 } PIF, * PPIF, FAR * LPPIF;
 
+// PIF Class to handle PIF files
+typedef struct tagPIFClass {
+	// Private
+	PIF Pif;
+	BYTE Mode;			// PIF Mode: 0-Real, 1-Standard, 2-Enhanced
+
+	// Methods
+	BYTE (*ComputeChecksum)(struct tagPIFClass FAR *);
+	VOID (*DefaultPIF)(struct tagPIFClass FAR *);
+	VOID (*SnapPif)(struct tagPIFClass FAR *);
+	int (*Write)(struct tagPIFClass FAR *, LPSTR lpszPIFName);
+	int (*Read)(struct tagPIFClass FAR *, LPSTR lpszPIFName);
+
+	// Attributes
+	VOID (*_set_Title)(struct tagPIFClass FAR *, LPSTR lpszPIFName);
+	LPSTR (*_get_Title)(struct tagPIFClass FAR *);
+
+	VOID (*_set_DOSMin)(struct tagPIFClass FAR *, WORD wValue);
+	WORD (*_get_DOSMin)(struct tagPIFClass FAR *);
+
+	VOID (*_set_DOSMax)(struct tagPIFClass FAR *, WORD wValue);
+	WORD (*_get_DOSMax)(struct tagPIFClass FAR *);
+
+	VOID (*_set_ProgramName)(struct tagPIFClass FAR *, LPSTR lpszPIFName);
+	LPSTR (*_get_ProgramName)(struct tagPIFClass FAR *);
+
+	VOID (*_set_Resident)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_Resident)(struct tagPIFClass FAR *);
+
+	VOID (*_set_Graphics)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_Graphics)(struct tagPIFClass FAR *);
+
+	VOID (*_set_NoSwitch)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_NoSwitch)(struct tagPIFClass FAR *);
+
+	VOID (*_set_NoGrab)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_NoGrab)(struct tagPIFClass FAR *);
+
+	VOID (*_set_Destroy)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_Destroy)(struct tagPIFClass FAR *);
+	
+	VOID (*_set_COM2)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_COM2)(struct tagPIFClass FAR *);
+
+	VOID (*_set_COM1)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_COM1)(struct tagPIFClass FAR *);
+
+	VOID (*_set_StartupDir)(struct tagPIFClass FAR *, LPSTR lpszPIFName);
+	LPSTR (*_get_StartupDir)(struct tagPIFClass FAR *);
+
+	VOID (*_set_CmdLine)(struct tagPIFClass FAR *, LPSTR lpszPIFName);
+	LPSTR (*_get_CmdLine)(struct tagPIFClass FAR *);
+
+	VOID (*_set_ScreenType)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_ScreenType)(struct tagPIFClass FAR *);
+
+	VOID (*_set_ScreenPages)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_ScreenPages)(struct tagPIFClass FAR *);
+	
+	VOID (*_set_IntVecLow)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_IntVecLow)(struct tagPIFClass FAR *);
+
+	VOID (*_set_IntVecHigh)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_IntVecHigh)(struct tagPIFClass FAR *);
+
+	VOID (*_set_ScrnRows)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_ScrnRows)(struct tagPIFClass FAR *);
+
+	VOID (*_set_ScrnCols)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_ScrnCols)(struct tagPIFClass FAR *);
+
+	VOID (*_set_RowOffs)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_RowOffs)(struct tagPIFClass FAR *);
+
+	VOID (*_set_ColOffs)(struct tagPIFClass FAR *, BYTE bValue);
+	BYTE (*_get_ColOffs)(struct tagPIFClass FAR *);
+
+	VOID (*_set_SystemMem)(struct tagPIFClass FAR *, WORD wValue);
+	WORD (*_get_SystemMem)(struct tagPIFClass FAR *);
+
+	VOID (*_set_FullScreen)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_FullScreen)(struct tagPIFClass FAR *);
+
+	VOID (*_set_Foreground)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_Foreground)(struct tagPIFClass FAR *);
+
+	VOID (*_set_CoProcessor)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_CoProcessor)(struct tagPIFClass FAR *);
+
+	VOID (*_set_Keyboard)(struct tagPIFClass FAR *, BOOL bValue);
+	BOOL (*_get_Keyboard)(struct tagPIFClass FAR *);
+
+} PIFClass;
+typedef PIFClass FAR * LPPIFClass;
+
+// Constructor
+LPPIFClass PIFClassNew(VOID);

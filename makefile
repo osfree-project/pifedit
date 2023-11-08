@@ -22,6 +22,6 @@ TARGETS = $(PATH)$(PROJ1).exe
 
 .ico: $(MYDIR)res
 
-$(PATH)$(PROJ1).exe: $(PATH)$(PROJ).exe $(MYDIR)qpifedit.rc
+$(PATH)$(PROJ1).exe: $(PATH)$(PROJ).exe $(MYDIR)$(PROJ1).rc
  @$(SAY) RESCMP   $^. $(LOG)
  @wrc -q -bt=windows $]@ $[@ -fe=$@ -fo=$^@ -i=$(MYDIR) -i=$(%WATCOM)$(SEP)h$(SEP)win

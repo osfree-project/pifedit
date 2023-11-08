@@ -82,3 +82,22 @@ VOID FixNul(register PSTR psz, int n)
 
     *(p+1) = '\0';
 }
+
+/****************************************************************************
+ *
+ *  FUNCTION :	SkipWhite(PSTR)
+ *
+ *  PURPOSE  :	Skip over leading whitespace in an ASCIZ string
+ *
+ *  ENTRY    :	PSTR	p;		// ==> ASCIZ string
+ *
+ *  RETURNS  :	Pointer advanced to first non-whitespace character
+ *
+ ****************************************************************************/
+
+PSTR SkipWhite(register PSTR p)
+{
+    while (*p && (*p == ' ' || *p == '\t')) p++;
+
+    return (p);
+}

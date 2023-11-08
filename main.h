@@ -36,6 +36,7 @@ typedef struct
 
 	BOOL	fUntitled;	// No .PIF loaded yet
 
+	LPPIFClass PIFObject;
 	PIF	pifModel;	// Complete 545-byte .PIF image
 	PIF	pifBackup;	// Complete 545-byte .PIF image before editing
 
@@ -281,3 +282,4 @@ int MessageBoxString(HWND hWnd, HINSTANCE hInst, UINT uID, UINT uType);
 void FAR cdecl MessageBoxPrintf(LPSTR szFormat, ...);
 BOOL CALLBACK _export StandardMsgProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 VOID FixNul(register PSTR psz, int n);
+PSTR SkipWhite(register PSTR p);

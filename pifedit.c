@@ -2,7 +2,7 @@
  *									      *
  *	     (C) Copyright 1992, 1993 Qualitas, Inc.  GNU General Public License version 3.    *
  *									      *
- *  MODULE   :	QPIFEDIT.C - Main source module for QPIFEDIT.EXE	      *
+ *  MODULE   :	PIFEDIT.C - Main source module for PIFEDIT.EXE	      *
  *									      *
  *  HISTORY  :	Who	When		What				      *
  *		---	----		----				      *
@@ -24,7 +24,6 @@ BOOL	Pane_OnInitDialog(HWND hWnd, HWND hWndFocus, LPARAM lParam);
 VOID	Pane_OnPaint(HWND hWnd);
 VOID	Pane_OnPaint_Iconic(HWND hWnd);
 VOID	Pane_OnSetFont(HWND hWndCtl, HFONT hFont, BOOL fRedraw);
-
 
 VOID	InitHelpWindow(HWND hWnd);
 VOID	SetHelpText(HWND hWnd, UINT idString);
@@ -140,8 +139,6 @@ CONTROL aControls[] = {
     { IDD_GENERAL,	IDB_EXCLEXEC,	BUTTON },
     { IDD_GENERAL,	IDB_ADVANCED,	BUTTON },
     { IDD_GENERAL,	IDB_CLOSEEXIT,	BUTTON },
-//{ 0,	IDB_STANDARD,	BUTTON },
-    //{ IDD_TASK,	IDB_ALTPRTSC,	BUTTON },
 
 { 0,	LASTCONTROL, LASTCONTROL}		// End of table marker
 };
@@ -169,6 +166,11 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	char	szTemp[ 256 ];
 	DWORD	dwVersion;
 
+	if (!(GetWinFlags() & WF_PMODE)) { // Real mode
+		MessageBoxString(0, hInstance, IDS_REALMODE, MB_OK);
+		return (1);
+	}
+
 	/* Setup Globals */
 	memset(&Globals, 0, sizeof (Globals));
 	Globals.hInst = hInstance;
@@ -191,12 +193,7 @@ int PASCAL WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpszCmdLi
 	}
 
 
-	if (!(GetWinFlags() & WF_PMODE)) { // Real mode
-		MessageBoxString(0, Globals.hInst, IDS_REALMODE, MB_OK);
-		return (1);
-	}
-
-// Initialize the COMMDLG OPENFILENAME structure
+	// Initialize the COMMDLG OPENFILENAME structure
 
 	Globals.ofn.lStructSize = sizeof(OPENFILENAME);
 	Globals.ofn.lpstrFilter = Globals.szFilter;
@@ -463,28 +460,6 @@ VOID CommDlgError(HWND hWnd, DWORD dwErrorCode)
     MessageBox(hWnd, szBuf, Globals.szAppTitle, MB_OK);
 }
 
-
-
-
-/****************************************************************************
- *
- *  FUNCTION :	SkipWhite(PSTR)
- *
- *  PURPOSE  :	Skip over leading whitespace in an ASCIZ string
- *
- *  ENTRY    :	PSTR	p;		// ==> ASCIZ string
- *
- *  RETURNS  :	Pointer advanced to first non-whitespace character
- *
- ****************************************************************************/
-
-PSTR SkipWhite(register PSTR p)
-{
-    while (*p && (*p == ' ' || *p == '\t')) p++;
-
-    return (p);
-}
-
 /****************************************************************************
  *
  *  FUNCTION :	IsPifFile(LPCSTR)
@@ -538,9 +513,9 @@ BOOL IsPifFile(LPCSTR lpszFileSpec)
     rc = _lread(hFile, (LPBYTE) pPIF, wFileLen);
 
     if (rc != (int) wFileLen) {
-	DebugPrintf("OpenPIF() _lread(%d, %.4X:%.4X, %d) failed\r\n",
+		DebugPrintf("OpenPIF() _lread(%d, %.4X:%.4X, %d) failed\r\n",
 		    hFile, SELECTOROF((LPPIF) pPIF), OFFSETOF((LPPIF) pPIF), wFileLen);
-	_lclose(hFile);  return (FALSE);
+		_lclose(hFile);  return (FALSE);
     }
 
     _lclose(hFile);
@@ -675,7 +650,7 @@ int OpenPIF(VOID)
 
 /* Open and read the file */
     DebugPrintf("OpenPIF(): _lopen(%s, OF_READ)\r\n", (LPSTR) Globals.szFile);
-
+	
     hFilePIF = _lopen(Globals.szFile, OF_READ);
 
 	if ((int) hFilePIF == HFILE_ERROR) {	// Can't open the .PIF
@@ -1151,63 +1126,6 @@ BOOL Pane_OnInitDialog(HWND hWnd, HWND hWndFocus, LPARAM lParam)
 
     ShowWindow(hWnd, SW_SHOWNORMAL);
 
-#if 0
-// Grab the hWnd for each child control and stuff it in aControls
-// Enable all the GENERAL controls, and disable all others
-    hdwp = BeginDeferWindowPos(64);
-
-    for (n = 0; n < sizeof(aControls)/sizeof(CONTROL); n++) {
-	HWND	hWndCtl;
-
-	if (aControls[n].Type == LASTCONTROL) continue;
-
-	hWndCtl = GetDlgItem(hWnd, aControls[n].ID);
-
-	aControls[n].hWnd = hWndCtl;
-
-	if (aControls[n].Pane && aControls[n].Pane != IDD_GENERAL) {
-	    hdwp = DeferWindowPos(
-			hdwp,
-			hWndCtl,
-			0,
-			0, 0, 0, 0,
-			SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_HIDEWINDOW
-			);
-	}
-    }
-
-    EndDeferWindowPos(hdwp);	// FIXME -- check return code
-#endif
-
-#if 0
-    for (n = 0; n < sizeof(aControls)/sizeof(CONTROL); n++) {
-	if (aControls[n].Type == LASTCONTROL) continue;
-
-	if (aControls[n].Pane && aControls[n].Pane != IDD_GENERAL) {
-	    HWND	hWndCtl = aControls[n].hWnd;
-
-	    EnableWindow(hWndCtl, FALSE);
-
-	    if (aControls[n].Type == BUTTON ||
-		aControls[n].Type == EDIT ||
-		aControls[n].Type == LTEXT ||
-		aControls[n].Type == GROUP) {
-		char	szBuf[128];
-		PSTR	p;
-
-		GetWindowText(hWndCtl, szBuf, sizeof(szBuf));
-
-		p = strchr(szBuf, '&');
-		if (p) {
-		    *p = '#';
-		    SetWindowText(hWndCtl, szBuf);
-		}
-	    }
-	}
-    }
-
-#endif
-
     Globals.nActiveDlg = IDD_GENERAL;
 
     Globals.hbrHelp = CreateSolidBrush(GetSysColor(COLOR_BTNFACE));
@@ -1290,7 +1208,6 @@ VOID Pane_OnPaint(HWND hWnd)
     hDC = BeginPaint(hWnd, &ps);
 
 // Get size of normal buttons for the background
-    //GetClientRect(GetDlgItem(hWnd, IDB_TASK), &rect);
     GetClientRect(hWnd, &rectWnd);
 
 
@@ -1820,7 +1737,6 @@ int ControlsFromPIF(PPIF pPIF, HWND hWnd)
 
     PPIFHDR	pPIFHDR = (PPIFHDR) pPIF;
     PPIFSIG	pPifSig = NULL;
-//  PPIF286	pPif286 = NULL;
     PPIF386	pPif386 = NULL;
 
 // Verify the checksum
@@ -1876,21 +1792,8 @@ int ControlsFromPIF(PPIF pPIF, HWND hWnd)
     wsprintf(szNumBuf,"%d",pPif386->XmsMax);
     SetDlgItemText(hWnd, IDE_XMSMAX, szNumBuf);
 
-    //CheckDlgButton(hWnd, IDB_DOSLOCK, (pPif386->TaskFlags & 0x0400) ? 1 : 0);
-    //CheckDlgButton(hWnd, IDB_EMSLOCK, (pPif386->TaskFlags & 0x0080) ? 1 : 0);
-    //CheckDlgButton(hWnd, IDB_XMSLOCK, (pPif386->TaskFlags & 0x0100) ? 1 : 0);
-    //CheckDlgButton(hWnd, IDB_XMSHMA, (!(pPif386->TaskFlags & 0x0020)) ? 1 : 0);
-
-    //wsprintf(szNumBuf,"%d",pPif386->ForePrio);
-    //SetDlgItemText(hWnd, IDE_FOREPRIO, szNumBuf);
-
-    //wsprintf(szNumBuf,"%d",pPif386->BackPrio);
-    //SetDlgItemText(hWnd, IDE_BACKPRIO, szNumBuf);
-
     CheckDlgButton(hWnd, IDB_FULLSCREEN, pPif386->WinFlags & 0x08 ? 1 : 0);
     CheckDlgButton(hWnd, IDB_WINDOWED, pPif386->WinFlags & 0x08 ? 0 : 1);
-
-    //CheckDlgButton(hWnd, IDB_DETECTIDLE, pPif386->TaskFlags & 0x0010 ? 1 : 0);
 
     CheckDlgButton(hWnd, IDB_BACKEXEC, pPif386->WinFlags & 0x02 ? 1 : 0);
     CheckDlgButton(hWnd, IDB_EXCLEXEC, pPif386->WinFlags & 0x04 ? 1 : 0);
@@ -1903,50 +1806,8 @@ int ControlsFromPIF(PPIF pPIF, HWND hWnd)
     CheckDlgButton(hWnd, IDB_LOW,  pPif386->VidFlags & 0x20 ? 1 : 0);
     CheckDlgButton(hWnd, IDB_HIGH, pPif386->VidFlags & 0x40 ? 1 : 0);
 
-//    CheckDlgButton(hWnd, IDB_MONTEXT, (!(pPif386->VidFlags & 0x02)) ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_MONLOW,  (!(pPif386->VidFlags & 0x04)) ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_MONHIGH, (!(pPif386->VidFlags & 0x08)) ? 1 : 0);
-
     CheckDlgButton(hWnd, IDB_EMULATE, pPif386->VidFlags & 0x01 ? 1 : 0);
     CheckDlgButton(hWnd, IDB_RETAIN,  pPif386->VidFlags & 0x80 ? 1 : 0);
-
-//    CheckDlgButton(hWnd, IDB_ALTENTER, pPif386->TaskFlags & 0x0001 ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_ALTPRTSC, pPif386->TaskFlags & 0x0002 ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_PRTSC, pPif386->TaskFlags & 0x0004 ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_CTRLESC, pPif386->TaskFlags & 0x0008 ? 1 : 0);
-
-//    CheckDlgButton(hWnd, IDB_ALTTAB, pPif386->WinFlags & 0x20 ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_ALTESC, pPif386->WinFlags & 0x40 ? 1 : 0);
-//    CheckDlgButton(hWnd, IDB_ALTSPACE, pPif386->WinFlags & 0x80 ? 1 : 0);
-
-//    if (pPif386->TaskFlags & 0x0040) {	// User-definable hotkey
-//	Globals.wHotkeyScancode = pPif386->Hotkey;
-//	Globals.bHotkeyBits = pPif386->HotkeyBits;
-
-//	CheckDlgButton(hWnd, IDB_ALT, pPif386->HotkeyShift & 0x08 ? 1 : 0);
-//	CheckDlgButton(hWnd, IDB_CTRL, pPif386->HotkeyShift & 0x04 ? 1 : 0);
-//	CheckDlgButton(hWnd, IDB_SHIFT, pPif386->HotkeyShift & 0x03 ? 1 : 0);
-
-//	GetKeyNameText(
-//		    MAKELPARAM(1, pPif386->Hotkey |
-//				((WORD) (pPif386->HotkeyBits & 1) << 8) |
-//				0x0200
-//				),
-//		    szNumBuf,
-//		    sizeof(szNumBuf)
-//		    );
-//	SetDlgItemText(hWnd, IDE_KEY, szNumBuf);
-
-//    } else {
-//	Globals.wHotkeyScancode = 0;
-//	Globals.bHotkeyBits = 0;
-
-//	CheckDlgButton(hWnd, IDB_ALT, 0);
-//	CheckDlgButton(hWnd, IDB_CTRL, 0);
-//	CheckDlgButton(hWnd, IDB_SHIFT, 0);
-//	SetDlgItemText(hWnd, IDE_KEY, NONE_STR);
-
-//    }
 
     return (0);
 }
@@ -2017,7 +1878,6 @@ VOID ControlsToPIF(HWND hWnd)
     pPIF->pif386.VidFlags |= IsDlgButtonChecked(hWnd, IDB_HIGH) ? 0x40 : 0;
 
 
-
 // Calculate the checksum for the old-style header
     pPIF->pifHdr.CheckSum = ComputePIFChecksum(pPIF);
 
@@ -2079,8 +1939,5 @@ HOTKEY_IS_BAD:
 }
 
 
-
-
-
-/* End of QPIFEDIT.C */
+/* End of PIFEDIT.C */
 
