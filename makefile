@@ -1,27 +1,16 @@
 #
-# A Makefile for WinOS/2 PIF Editor
-# (c) osFree project,
+# A Makefile for osFree Janus PIF Editor
+# (c) osFree project
 #
 
-PROJ  = pifedit1
-PROJ1 = pifedit
-TRGT = $(PROJ1).exe
-DESC = Windows PIF Editor
-srcfiles = $(p)pifedit$(e) $(p)pif$(e) $(p)standard$(e) $(p)advanced$(e) $(p)utils$(e)
+DESCRIPTION = osFree Janus PIF Editor
+TARGET_API = WIN
+TARGET_VERSION = 310
+SOURCES = pifedit pif standard advanced utils
+LIBS = commdlg
 
 # defines additional options for C compiler
 ADD_COPT = -sg -DDEBUG=1
-ADD_LINKOPT = LIB commdlg.lib
 
-HEAPSIZE = 18k
-STACKSIZE = 18k
+!include $(%ROOT)tools/mk/build.mk
 
-!include $(%ROOT)tools/mk/appsw16.mk
-
-TARGETS = $(PATH)$(PROJ1).exe
-
-.ico: $(MYDIR)res
-
-$(PATH)$(PROJ1).exe: $(PATH)$(PROJ).exe $(MYDIR)$(PROJ1).rc
- @$(SAY) RESCMP   $^. $(LOG)
- @$(RC) -q -bt=windows $]@ $[@ -fe=$@ -fo=$^@ -i=$(MYDIR) -i=$(%WATCOM)$(SEP)h$(SEP)win
