@@ -4,7 +4,6 @@
 #
 
 DESCRIPTION = osFree Janus PIF Editor
-TARGET_API = WIN
 TARGET_VERSION = 310
 SOURCES = pifedit pif standard advanced utils
 LIBS = commdlg
