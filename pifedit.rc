@@ -1,4 +1,7 @@
 /* qpifedit.rc - (C) Copyright 1993 Qualitas, Inc.  GNU General Public License version 3. */
+/*
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ */
 
 #include <windows.h>
 

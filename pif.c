@@ -2,6 +2,9 @@
  *									      *
  *	     (C) Copyright 1992, 1993 Qualitas, Inc.  GNU General Public License version 3.    *
  *									      *
+ *
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ *
  *  MODULE   :	PIF.C - PIF parser
  *									      *
  ******************************************************************************/

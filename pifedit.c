@@ -1,7 +1,9 @@
 /************************  The Qualitas PIF Editor  ***************************
  *									      *
  *	     (C) Copyright 1992, 1993 Qualitas, Inc.  GNU General Public License version 3.    *
- *									      *
+ *
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ *
  *  MODULE   :	PIFEDIT.C - Main source module for PIFEDIT.EXE	      *
  *									      *
  *  HISTORY  :	Who	When		What				      *

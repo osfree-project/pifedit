@@ -1,3 +1,6 @@
+/*
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ */
 //
 // CVERSION.H - Example component version info file
 //

@@ -2,6 +2,8 @@
  *
  * (C) Copyright 1992-93 Qualitas, Inc.  GNU General Public License version 3.
  *
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ *
  * PIF.H
  *
  * Windows .PIF structure and equates

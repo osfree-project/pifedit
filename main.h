@@ -1,3 +1,6 @@
+/*
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ */
 #include <ctype.h>		// For isdigit()
 #include <stdio.h>		// For sscanf()
 #include <string.h>		// For memset, memcmp, memcpy, strncpy, strchr

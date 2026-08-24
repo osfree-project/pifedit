@@ -5,6 +5,9 @@
 //
 // ------------------------------------------------------
 // Copyright (C) 1995 Qualitas, Inc.  GNU General Public License version 3
+// *
+// *      SPDX-License-Identifier: GPL-3.0-or-later
+// *
 // ------------------------------------------------------
 
 #include <_lcldefs.h>					// Define BUILD_BETA, BUILD_ALPHA

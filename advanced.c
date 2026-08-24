@@ -3,6 +3,8 @@
  *	(C) Copyright 1992, 1993 Qualitas, Inc.  GNU General Public License version 3.
  *	(C) Copyright 2013 osFree
  *
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ *
  *  MODULE   :	ADVANCED.C - Advanced dialog box
  *
  *  HISTORY  :	Who	When		What

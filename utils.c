@@ -1,3 +1,6 @@
+/*
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ */
 #include "main.h"
 
 int MessageBoxString(HWND hWnd, HINSTANCE hInst, UINT uID, UINT uType)

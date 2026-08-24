@@ -2,6 +2,9 @@
 
 /****************************************************************************
  *
+ *
+ *      SPDX-License-Identifier: GPL-3.0-or-later
+ *
  *  FUNCTION :	SMMsgProc(HWND, UINT, WPARAM, LPARAM)
  *
  *  PURPOSE  :	Message proc for the Standard mode bitch dialog box

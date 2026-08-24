@@ -9,6 +9,9 @@
 *		The API is unchanged for LIB and DLL versions.		      *
 *									      *
 *		Copyright (c) 1992, Microsoft Corp.  GNU General Public License version 3      *
+*
+*      SPDX-License-Identifier: GPL-3.0-or-later
+*
 *									      *
 *******************************************************************************
 *
