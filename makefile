@@ -5,6 +5,7 @@
 
 DESCRIPTION = Janus PIF Editor
 TARGET_VERSION = 310
+TARGET_PACKAGE = DISK02
 
 # defines additional options for C compiler
 ADD_COPT = -DDEBUG=1
